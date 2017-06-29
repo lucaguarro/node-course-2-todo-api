@@ -38,10 +38,10 @@ const {MongoClient, ObjectID} = require('mongodb');
 });*/
 MongoClient.connect('mongodb://localhost:27017/TodoApp', (err, db) => {
     if (err) {
-        return console.log("fuck off");
+        return console.log("didnt connect brother");
     }
     console.log("Haha we good man");
-    var coll = db.collection("Todos");
+    var coll = db.collection("Users");
     coll.insertOne({
         name: 'Mr. Sir Charles Bland',
         age: 23,
