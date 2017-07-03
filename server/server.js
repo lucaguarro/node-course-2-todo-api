@@ -26,7 +26,7 @@ app.post('/todos', (req, res) => {
 
 app.get('/todos', (req, res) => { //our get request to get all todos. Will make it so that you can get individual todos as well.
     Todo.find().then((todos) => {
-        res.send({todos})
+        res.send({todos});
     }, (e) => {
         res.status(400).send(e);
     });
