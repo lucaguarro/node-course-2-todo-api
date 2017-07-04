@@ -7,6 +7,7 @@ var {Todo} = require('./models/todo');
 var {User} = require('./models/user');
 
 var app = express();
+const port = process.env.PORT || 3000; //if a port is not found, will use localhost 3000
 
 //app.use is called every time a request is sent to the server
 //we give express the bodyParson.json() middleware
@@ -56,8 +57,8 @@ app.get('/todos/:id', (req, res) => { //to make a dynamic array we add a paramet
             
 });
 
-app.listen(3000, () => {
-    console.log('Started on port 3000');
+app.listen(port, () => {
+    console.log(`Started on port ${port}`);
 });
 
 module.exports = {app};
