@@ -1,5 +1,6 @@
 const expect = require('expect');
 const request = require('supertest');
+const {ObjectID} = require('mongodb');
 
 const {app} = require('./../server');
 const {Todo} = require('./../models/todo');
@@ -8,8 +9,10 @@ const {Todo} = require('./../models/todo');
 //so that our get request actually gets something
 //This is called seed data
 const todos = [{
+    _id: new ObjectID(),//so we can access the id in our test case
     text: 'First test todo'
 }, {
+    _id: new ObjectID(),
     text: 'Second test todo'
 }];
 
@@ -69,4 +72,33 @@ describe('GET /todos', () => {
             })
             .end(done);
     });
+});
+
+describe('Get /todos/:id', () => {
+    it('should return todo doc', (done) => {
+        request(app)
+            .get(`/todos/${todos[0]._id.toHexString()}`) //toHexString converts the objectID to a string
+            .expect(200)
+            .expect((res) => {
+                expect(res.body.todo.text).toBe(todos[0].text);
+            })
+            .end(done);
+    });
+
+    it('should return 404 if todo not found', (done) => {
+        //make sure you get a 404 back
+        var hexId = new ObjectID().toHexString();
+        request(app)
+            .get(`/todos/${hexId}`)
+            .expect(404)
+            .end(done);
+    });
+
+    it('should return 404 if given invalid object id', (done) => { //we specify (done) for async calls
+        // /todos/123
+        request(app)
+            .get('/todos/123')
+            .expect(404)
+            .end(done);
+    })
 });
