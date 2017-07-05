@@ -1,3 +1,5 @@
+require('./config/config');
+
 const _ = require('lodash');
 const express = require('express');
 const bodyParser = require('body-parser'); //bodyParser takes our JSON and converts it into an object.
@@ -8,7 +10,7 @@ var {Todo} = require('./models/todo');
 var {User} = require('./models/user');
 
 var app = express();
-const port = process.env.PORT || 3000; //if a port is not found, will use localhost 3000
+const port = process.env.PORT;
 
 //app.use is called every time a request is sent to the server
 //we give express the bodyParson.json() middleware
