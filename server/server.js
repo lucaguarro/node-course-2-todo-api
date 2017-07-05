@@ -1,5 +1,6 @@
-var express = require('express');
-var bodyParser = require('body-parser'); //bodyParser takes our JSON and converts it into an object.
+const _ = require('lodash');
+const express = require('express');
+const bodyParser = require('body-parser'); //bodyParser takes our JSON and converts it into an object.
 const {ObjectID} = require('mongodb');
 
 var {mongoose} = require('./db/mongoose');
@@ -73,6 +74,35 @@ app.delete('/todos/:id', (req, res) => {
     }).catch((e) => { // error
         res.status(400).send(); // 400 with empty body
     });          
+});
+
+//patch is used for updating documents
+app.patch('/todos/:id', (req, res) => {
+    var id = req.params.id;
+    //where updates are stored
+    //We do not want the user to update certain items of a document. For example the completedAt property.
+    var body = _.pick(req.body, ['text', 'completed']); //these are the only two properties a user can update. Nor can they add new properties.
+                                                        //now body only holds the text and completed properties. It is a subset of what the user passed to us.
+    
+    if(!ObjectID.isValid(id)){
+        return res.status(404).send();
+    }
+
+    if(_.isBoolean(body.completed) && body.completed){ //if the completed property is a boolean and it is true
+        body.completedAt = new Date().getTime(); //javascript timestamp in milliseconds of the amount of time since midnight jan 1st, 1970
+    } else {
+        body.completed = false;
+        body.completedAt = null;
+    }
+
+    Todo.findByIdAndUpdate(id, {$set: body}, {new: true}).then((todo) => {
+        if(!todo){
+            return res.status(404).send();
+        }
+        res.send({todo});
+    }).catch((e) => {
+        res.status(400).send();
+    })
 });
 
 app.listen(port, () => {
