@@ -12,7 +12,7 @@ mongoose.Promise = global.Promise;
 };
 mongoose.connect( process.env.PORT ? db.mlab : db.localhost);
 */
-mongoose.connect( process.env.MONGODB_URI);
+mongoose.connect( process.env.MONGODB_URI || 'mongodb://localhost:27017/TodoApp');
 
 // if we save something down here, mongoose.connect will not have time to make a request to connect
 // behind the scenes mongoose will be waiting for the connection before it makes the query

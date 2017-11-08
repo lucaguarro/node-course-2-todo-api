@@ -43,8 +43,8 @@ MongoClient.connect('mongodb://localhost:27017/TodoApp', (err, db) => {
     console.log("Haha we good man");
     var coll = db.collection("Users");
     coll.insertOne({
-        name: 'Mr. Sir Charles Bland',
-        age: 23,
+        name: 'Mr. Sir Charles Bland Sr',
+        age: 55,
         location: "Manhattan Beach, CA"
     }, (err, result) => {
         if(err){

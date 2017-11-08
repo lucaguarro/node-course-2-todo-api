@@ -10,7 +10,7 @@ var {Todo} = require('./models/todo');
 var {User} = require('./models/user');
 
 var app = express();
-const port = process.env.PORT;
+const port = process.env.PORT || 3000;
 
 //app.use is called every time a request is sent to the server
 //we give express the bodyParson.json() middleware
@@ -106,6 +106,8 @@ app.patch('/todos/:id', (req, res) => {
         res.status(400).send();
     })
 });
+
+// POST / users
 
 app.listen(port, () => {
     console.log(`Started on port ${port}`);
